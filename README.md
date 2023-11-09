@@ -41,6 +41,6 @@ Contribuições externas para este projeto não são aceitas no momento. No enta
 For inquiries or support, feel free to contact the project team:
 ```
 - Cristiano Olim 40220477@esmad.ipp.pt
-- Manuel Liu @esmad.ipp.pt
-- Bruno Silva 40210352@esmad.ipp.pt
+- Manuel Liu 40210352@esmad.ipp.pt
+- Bruno Silva 4020222@esmad.ipp.pt
 ```
