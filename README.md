@@ -1,28 +1,26 @@
-# A Flaggy Bird
+# Traffic Jam
 
-## A Descrição do Projeto
-O Flaggy Bird é um simulador interativo desenvolvido em HTML, Canvas e CSS. O jogo é inspirado em um famoso jogo de pássaros, mas com um toque único. Os jogadores controlam um pássaro que precisa atravessar uma série de obstáculos, representados por bandeiras, enquanto evita colisões.
+## Descrição do Projeto
+O Traffic Jam é um simulador interativo desenvolvido em HTML, Canvas e CSS. O objetivo do jogo é gerenciar o tráfego em uma cidade movimentada, controlando semáforos e evitando congestionamentos.
 
-## A Objetivos do Projeto
+## Objetivos do Projeto
 O primeiro projeto de Computação Gráfica tem como objetivo desenvolver em HTML5 canvas e animações CSS3 2D para a web, através do desenvolvimento de um SIMULADOR INTERATIVO. 
 
-## A Funcionalidades Principais
-Controle do pássaro: Os jogadores podem controlar o movimento do pássaro usando as teclas de seta.
+## Funcionalidades Principais
+Controle de semáforos: Os jogadores podem alterar os semáforos para controlar o fluxo de tráfego nas interseções.
 
-Obstáculos de bandeira: O jogo apresenta uma série de bandeiras como obstáculos que o pássaro precisa evitar.
+Diferentes níveis de dificuldade: O jogo oferece vários níveis de dificuldade, com diferentes configurações de tráfego e tempo disponível.
 
-Pontuação: Os jogadores ganham pontos a cada bandeira que conseguem atravessar com sucesso.
+Estatísticas de desempenho: Ao concluir cada nível, os jogadores podem verificar suas estatísticas de desempenho, como o tempo total de espera dos veículos e o número de acidentes evitados.
 
-Níveis de dificuldade: O jogo oferece diferentes níveis de dificuldade, com velocidades e layouts de obstáculos variados.
-
-## A Requisitos do Projeto
+## Requisitos do Projeto
 Navegador da web com suporte a HTML5 e CSS3.
 
 Conexão com a internet para carregar recursos externos, como imagens e fontes.
 
 Recomenda-se uma resolução de tela mínima de 1024x768 para uma melhor experiência de jogo.
 
-## A Uso
+## Uso
 Faça o download ou clone este repositório.
 
 Abra o arquivo index.html em um navegador da web compatível.
@@ -33,12 +31,12 @@ Tente acumular a maior pontuação possível, atravessando as bandeiras com suce
 
 Aumente o desafio jogando em diferentes níveis de dificuldade.
 
-## A Contribuições
+## Contribuições
 Contribuições externas para este projeto não são aceitas no momento. No entanto, sinta-se à vontade para fazer um fork do repositório e trabalhar em sua própria versão.
 
-## A Contact Information
+## Informações de Contacto
 
-For inquiries or support, feel free to contact the project team:
+Sinta-se à vontade para entrar em contato com a equipa de Projeto:
 ```
 - Cristiano Olim 40220477@esmad.ipp.pt
 - Manuel Liu 40210352@esmad.ipp.pt
