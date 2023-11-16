@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+  <title>Car Simulation</title>
+</head>
+<body>
+  <canvas id="simulationCanvas"></canvas>
+
+  <script>
+    class Car {
+      constructor(x, y, speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.width = 50;
+        this.height = 30;
+      }
+
+      move() {
+        this.x += this.speed;
+      }
+
+      draw(context) {
+        context.fillStyle = 'blue';
+        context.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    class Road {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.context = canvas.getContext('2d');
+        this.roadWidth = canvas.width;
+        this.roadHeight = canvas.height;
+      }
+
+      draw() {
+        // Draw road background
+        this.context.fillStyle = 'gray';
+        this.context.fillRect(0, 0, this.roadWidth, this.roadHeight);
+
+        // Draw road markings
+        this.context.fillStyle = 'white';
+        this.context.fillRect(0, this.roadHeight / 2 - 5, this.roadWidth, 10);
+
+        // Draw center line
+        this.context.strokeStyle = 'white';
+        this.context.lineWidth = 5;
+        this.context.beginPath();
+        this.context.setLineDash([20, 15]);
+        this.context.moveTo(0, this.roadHeight / 2);
+        this.context.lineTo(this.roadWidth, this.roadHeight / 2);
+        this.context.stroke();
+        this.context.closePath();
+      }
+    }
+
+    class CarSimulation {
+      constructor() {
+        this.canvas = document.getElementById('simulationCanvas');
+        this.context = this.canvas.getContext('2d');
+        this.road = new Road(this.canvas);
+        this.cars = [new Car(50, this.canvas.height / 2 - 15, 2), new Car(50, this.canvas.height / 2 + 15, 4)];
+      }
+
+      update() {
+        this.cars.forEach(car => {
+          car.move();
+          if (car.x > this.canvas.width) {
+            car.x = -car.width; // Reset car position when it goes off the screen
+          }
+        });
+      }
+
+      draw() {
+        this.road.draw();
+        this.cars.forEach(car => car.draw(this.context));
+      }
+
+      run() {
+        setInterval(() => {
+          this.update();
+          this.draw();
+        }, 40);
+      }
+    }
+
+    const simulation = new CarSimulation();
+    simulation.run();
+  </script>
+</body>
+</html>

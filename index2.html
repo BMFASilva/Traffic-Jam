@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    canvas {
+      display: block;
+      border: 2px solid yellow;
+      background: #666;
+    }
+  </style>
+  <title>Simulador de Tráfego Ajustado</title>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="200"></canvas>
+  <script>
+    class Carro {
+      constructor(tipo, x, y, velocidade) {
+        this.tipo = tipo;
+        this.x = x;
+        this.y = y;
+        this.velocidade = velocidade;
+        this.comprimento = 60;
+        this.largura = 30;
+        this.distanciaMinima = 100;
+      }
+
+      desenhar(ctx) {
+        ctx.fillStyle = this.getCor();
+        ctx.fillRect(this.x, this.y, this.comprimento, this.largura);
+        ctx.fillStyle = "white";
+        ctx.fillText(this.tipo.toUpperCase(), this.x + 5, this.y + 15);
+        ctx.fillText(this.velocidade.toFixed(2), this.x + 5, this.y + 30);
+      }
+
+      getCor() {
+        return this.tipo === 'sedan' ? 'blue' : 'red';
+      }
+
+      mover() {
+        this.x += this.velocidade / 10;
+        if (this.x > 800) {
+          this.x = -this.comprimento;
+        }
+      }
+
+      verificarColisao(outroCarro) {
+        return (
+          this.x < outroCarro.x + outroCarro.comprimento &&
+          this.x + this.comprimento > outroCarro.x &&
+          this.y < outroCarro.y + outroCarro.largura &&
+          this.y + this.largura > outroCarro.y
+        );
+      }
+
+      ajustarVelocidade(distancia) {
+        if (distancia < this.distanciaMinima) {
+          this.velocidade /= 2;
+        }
+      }
+    }
+
+    class Simulacao {
+      constructor(quantidadeCarros) {
+        this.carros = Array.from({ length: quantidadeCarros }, (_, index) => this.gerarCarro(index));
+      }
+
+      gerarCarro(index) {
+        const tipos = ['sedan', 'caminhão'];
+        const tipoAleatorio = tipos[index % tipos.length];
+        const velocidadeAleatoria = tipoAleatorio === 'sedan' ? 40 : 30;
+        return new Carro(tipoAleatorio, -index * 120, Math.random() * 170 + 50, velocidadeAleatoria);
+      }
+
+      passo() {
+        for (const carro of this.carros) {
+          carro.mover();
+          for (const outroCarro of this.carros) {
+            if (carro !== outroCarro) {
+              const distancia = Math.abs(carro.x - outroCarro.x);
+              carro.ajustarVelocidade(distancia);
+            }
+          }
+        }
+
+        return this.carros;
+      }
+    }
+
+    class CanvasRenderer {
+      constructor(idCanvas) {
+        this.canvas = document.getElementById(idCanvas);
+        this.ctx = this.canvas.getContext('2d');
+        this.linhaDivisoria = 100;
+      }
+
+      limparCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
+      desenharEstrada() {
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = 'white';
+        this.ctx.lineWidth = 5;
+        this.ctx.moveTo(0, this.linhaDivisoria);
+        this.ctx.lineTo(this.canvas.width, this.linhaDivisoria);
+        this.ctx.stroke();
+      }
+
+      renderizar(carros) {
+        this.limparCanvas();
+        this.desenharEstrada();
+        for (const carro of carros) {
+          carro.desenhar(this.ctx);
+        }
+      }
+    }
+
+    const quantidadeCarros = 10; // Ajuste a quantidade de carros conforme necessário
+    const simulacao = new Simulacao(quantidadeCarros);
+    const renderer = new CanvasRenderer('canvas');
+
+    function executarSimulacao() {
+      simulacao.passo();
+      renderer.renderizar(simulacao.carros);
+      requestAnimationFrame(executarSimulacao);
+    }
+
+    executarSimulacao();
+  </script>
+</body>
+</html>
