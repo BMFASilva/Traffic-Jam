@@ -1,103 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semaforo e Estrada Simulation</title>
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #eee;
     }
+
     canvas {
-      display: block;
+      border: 1px solid #333;
+    }
+
+    .controls {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
     }
   </style>
-  <title>Car Simulation</title>
 </head>
+
 <body>
-  <canvas id="simulationCanvas"></canvas>
+  <canvas id="trafficCanvas" width="1000" height="600"></canvas>
+  <div class="controls">
+    <button id="redButton">Vermelho</button>
+    <button id="greenButton">Verde</button>
+  </div>
 
   <script>
-    class Car {
-      constructor(x, y, speed) {
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        this.width = 50;
-        this.height = 30;
+    document.addEventListener('DOMContentLoaded', function () {
+      const canvas = document.getElementById('trafficCanvas');
+      const ctx = canvas.getContext('2d');
+      const redButton = document.getElementById('redButton');
+      const greenButton = document.getElementById('greenButton');
+
+      let semaforoColor = '#00FF00'; // Cor inicial (verde)
+      let isTransitioning = false;
+
+      // Variáveis para controlar carros
+      let carPosX = 50;
+      let carSpeed = 2;
+      let isMoving = true;
+
+      redButton.addEventListener('click', function () {
+        if (!isTransitioning) {
+          isTransitioning = true;
+          transitionToRed();
+        }
+      });
+
+      greenButton.addEventListener('click', function () {
+        semaforoColor = '#00FF00';
+        isTransitioning = false;
+        drawTrafficLight();
+      });
+    
+
+      function transitionToRed() {
+        semaforoColor = '#FFFF00'; // Amarelo durante a transição
+        drawTrafficLight();
+
+        setTimeout(function () {
+          semaforoColor = '#FF0000'; // Vermelho após o amarelo
+          isTransitioning = false;
+          drawTrafficLight();
+        }, 500); // Tempo para o amarelo, ajuste conforme necessário
       }
 
-      move() {
-        this.x += this.speed;
+      function drawTrafficLight() {
+        // Limpar o Canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Desenhar o poste do semáforo
+        ctx.fillStyle = '#333';
+        ctx.fillRect(180, 50, 40, 150);
+
+        // Desenhar os círculos do semáforo
+        // Vermelho
+        ctx.fillStyle = semaforoColor === '#FF0000' ? '#FF0000' : '#444';
+        ctx.beginPath();
+        ctx.arc(200, 150, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Amarelo
+        ctx.fillStyle = semaforoColor === '#FFFF00' ? '#FFFF00' : '#444';
+        ctx.beginPath();
+        ctx.arc(200, 115, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Verde
+        ctx.fillStyle = semaforoColor === '#00FF00' ? '#00FF00' : '#444';
+        ctx.beginPath();
+        ctx.arc(200, 80, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Desenhar a estrada
+        ctx.fillStyle = '#444';
+        ctx.fillRect(0, 200, canvas.width, 200);
+
+        // Desenhar o carro
+        ctx.fillStyle = '#00F';
+        ctx.fillRect(carPosX, 250, 30, 20);
+
+        // Verificar se o carro está a 10px do semáforo vermelho
+        const isNearRedLight = carPosX + 30 >= 180 && carPosX < 190 && semaforoColor === '#FF0000';
+
+        // Movimentar o carro se o semáforo estiver verde ou se não estiver perto do vermelho
+        if (isMoving && (semaforoColor === '#00FF00' || !isNearRedLight)) {
+          carPosX += carSpeed;
+        }
+
+        // Verificar se o carro atingiu o final da estrada
+        if (carPosX > canvas.width) {
+          carPosX = -30; // Reiniciar na posição inicial
+        }
+
+        // Redesenhar a cada frame
+        requestAnimationFrame(drawTrafficLight);
       }
 
-      draw(context) {
-        context.fillStyle = 'blue';
-        context.fillRect(this.x, this.y, this.width, this.height);
-      }
-    }
-
-    class Road {
-      constructor(canvas) {
-        this.canvas = canvas;
-        this.context = canvas.getContext('2d');
-        this.roadWidth = canvas.width;
-        this.roadHeight = canvas.height;
-      }
-
-      draw() {
-        // Draw road background
-        this.context.fillStyle = 'gray';
-        this.context.fillRect(0, 0, this.roadWidth, this.roadHeight);
-
-        // Draw road markings
-        this.context.fillStyle = 'white';
-        this.context.fillRect(0, this.roadHeight / 2 - 5, this.roadWidth, 10);
-
-        // Draw center line
-        this.context.strokeStyle = 'white';
-        this.context.lineWidth = 5;
-        this.context.beginPath();
-        this.context.setLineDash([20, 15]);
-        this.context.moveTo(0, this.roadHeight / 2);
-        this.context.lineTo(this.roadWidth, this.roadHeight / 2);
-        this.context.stroke();
-        this.context.closePath();
-      }
-    }
-
-    class CarSimulation {
-      constructor() {
-        this.canvas = document.getElementById('simulationCanvas');
-        this.context = this.canvas.getContext('2d');
-        this.road = new Road(this.canvas);
-        this.cars = [new Car(50, this.canvas.height / 2 - 15, 2), new Car(50, this.canvas.height / 2 + 15, 4)];
-      }
-
-      update() {
-        this.cars.forEach(car => {
-          car.move();
-          if (car.x > this.canvas.width) {
-            car.x = -car.width; // Reset car position when it goes off the screen
-          }
-        });
-      }
-
-      draw() {
-        this.road.draw();
-        this.cars.forEach(car => car.draw(this.context));
-      }
-
-      run() {
-        setInterval(() => {
-          this.update();
-          this.draw();
-        }, 40);
-      }
-    }
-
-    const simulation = new CarSimulation();
-    simulation.run();
+      // Inicializar o desenho do semáforo
+      drawTrafficLight();
+    });
   </script>
 </body>
+
 </html>

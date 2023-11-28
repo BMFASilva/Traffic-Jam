@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #46494c;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+    <title>Realistic Road with Intersections</title>
+</head>
+<body>
+    <canvas id="roadCanvas"></canvas>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const canvas = document.getElementById("roadCanvas");
+            const ctx = canvas.getContext("2d");
+
+            // Set canvas size to match the window size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Draw background
+            ctx.fillStyle = "#46494c";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw dashed lines
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 3;
+            ctx.setLineDash([20, 20]);
+            ctx.lineDashOffset = 5;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+
+            // Blocos verdes
+            ctx.fillStyle = "#1b4332" ;
+            ctx.fillRect(0, 0, 300, 250);
+            ctx.fillRect(canvas.width - 300, 0, 300, 250);
+            ctx.fillRect(0, canvas.height - 250, 300, 250);
+            ctx.fillRect(canvas.width - 300, canvas.height - 250, 300, 250);
+            ctx.fillRect(canvas.width / 2 - 120, 0, 250, 250);
+            ctx.fillRect(canvas.width / 2 - 120, canvas.height - 250, 250, 250);
+
+            //Desenha linhas a tracejado entre os quadrados
+            ctx.strokeStyle = "#000";
+            ctx.lineWidth = 3;
+            ctx.setLineDash([20, 20]);
+            ctx.lineDashOffset = 5;
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - 280, -20, 0);
+            ctx.lineTo(canvas.width / 2 - 280, 900, 100);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 + 280, -20, 0);
+            ctx.lineTo(canvas.width / 2 + 280, 900, 100);
+            ctx.stroke();      
+
+            //Passadeiras
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(canvas.width / 2 - 85, 250, 180, 10);
+            ctx.fillRect(canvas.width / 2 - 85, canvas.height - 260, 180, 10);
+
+            ctx.fillRect(canvas.width / 2 - 85, 300, 180, 10);
+            ctx.fillRect(canvas.width / 2 - 85, canvas.height - 360, 180, 10);
+
+            ctx.fillRect(canvas.width / 2 - 85, 350, 180, 10);
+            ctx.fillRect(canvas.width / 2 - 85, 435, 180, 10);
+            //Desenha mais passadeiras nos blocos verdes da esquerda
+            ctx.fillRect(50, 250, 180, 10);
+            ctx.fillRect(50, 300, 180, 10);
+            ctx.fillRect(50, 350, 180, 10);
+            ctx.fillRect(50, 385, 180, 10);
+            ctx.fillRect(50, 435, 180, 10);
+            ctx.fillRect(50, 485, 180, 10);
+            //Desenha mais passadeiras nos blocos verdes da direita
+            ctx.fillRect(canvas.width - 230, 250, 180, 10);
+            ctx.fillRect(canvas.width - 230, 300, 180, 10);
+            ctx.fillRect(canvas.width - 230, 350, 180, 10);
+            ctx.fillRect(canvas.width - 230, 385, 180, 10);
+            ctx.fillRect(canvas.width - 230, 435, 180, 10);
+            ctx.fillRect(canvas.width - 230, 485, 180, 10);
+            //Desenha mais passadeiras entre os 3 blocos verdes de baixo, linhas em branco na vertical
+            ctx.fillRect(300, canvas.height - 230, 10, 180);
+            ctx.fillRect(360, canvas.height - 230, 10, 180);
+            ctx.fillRect(420, canvas.height - 230, 10, 180);
+            ctx.fillRect(505, canvas.height - 230, 10, 180);
+            ctx.fillRect(565, canvas.height - 230, 10, 180);
+            ctx.fillRect(618, canvas.height - 230, 10, 180);  
+            //Desenha mais passadeiras entre os 3 blocos verdes de cima, linhas em branco na vertical
+            ctx.fillRect(300, 50, 10, 180);
+            ctx.fillRect(360, 50, 10, 180);
+            ctx.fillRect(420, 50, 10, 180);
+            ctx.fillRect(505, 50, 10, 180);
+            ctx.fillRect(565, 50, 10, 180);
+            ctx.fillRect(618, 50, 10, 180);
+            // //Desenha mais passadeiras entre os 2 blocos verdes de baixo da direita, linhas em branco na vertical
+            ctx.fillRect(canvas.width - 618, canvas.height - 230, 10, 180);
+            ctx.fillRect(canvas.width - 565, canvas.height - 230, 10, 180);
+            ctx.fillRect(canvas.width - 505, canvas.height - 230, 10, 180);
+            ctx.fillRect(canvas.width - 435, canvas.height - 230, 10, 180);
+            ctx.fillRect(canvas.width - 370, canvas.height - 230, 10, 180);
+            ctx.fillRect(canvas.width - 310, canvas.height - 230, 10, 180);
+            // //Desenha mais passadeiras entre os 2 blocos verdes de cima da direita, linhas em branco na vertical
+            ctx.fillRect(canvas.width - 618, 50, 10, 180);
+            ctx.fillRect(canvas.width - 565, 50, 10, 180);
+            ctx.fillRect(canvas.width - 505, 50, 10, 180);
+            ctx.fillRect(canvas.width - 435, 50, 10, 180);
+            ctx.fillRect(canvas.width - 370, 50, 10, 180);
+            ctx.fillRect(canvas.width - 310, 50, 10, 180);
+
+            
+
+
+            
+
+
+
+           
+
+            
+
+            // Resize canvas when the window is resized
+            window.addEventListener('resize', function () {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+</body>
+</html>
