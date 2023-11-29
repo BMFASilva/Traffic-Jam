@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: darkblue;
+    transition: background-color 0.5s ease;
+}
+
+.darkgrey-background {
+    background-color: darkgrey !important;
+}
+
+#title-card {
+    text-align: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: darkblue;
+    transition: opacity 0.5s ease;
+}
+
+#title {
+    font-size: 7em;
+    /* Adjusted text color for each letter in "Jam" */
+    color: lightblue;
+}
+
+#begin-button {
+    padding: 15px 30px; /* Adjusted padding for a larger size */
+    font-size: 2em; /* Adjusted font size */
+    margin-top: 10px; /* Adjusted margin to bring the button closer to the title */
+    margin-bottom: 20px; /* Added margin-bottom to increase space between title and button */
+    cursor: pointer;
+    background-color: lightblue;
+    color: black;
+    border: none;
+    border-radius: 20px;
+}
+
+
+#title .space {
+    margin-right: 10px; /* Adjusted margin for space between "Traffic" and "Jam" */
+}
+
+#title span {
+    font-weight: bold;
+}
+
+#title .green {
+    color: green;
+}
+
+#title .yellow {
+    color: yellow;
+}
+
+#title .red {
+    color: red;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px; /* Adjust the padding as needed */
+}
+
+  .background-img {
+    width: 70%; /* Adjust the size of the image */
+    height: auto;
+    border: 10px solid white; /* Add a thick white border, adjust thickness as needed */
+}
+
+  #road, #roadReverse, #roadY {
+    position: absolute;
+    overflow: hidden; /* Ensure overflow is hidden to contain the moving rectangle */
+  }
+  #roadReverse{
+      top: 490px;
+      right: 315px;
+  }
+  #road{
+      top: 363px;
+      left: 310px;
+  }
+
+  #roadY {
+    position: absolute;
+    top: 113px;
+    left: 550px;
+  }
+  #roadYReverse {
+    position: absolute;
+    top: 0;
+    left: 658px;
+  }
+  #roadY2 {
+    position: absolute;
+    top: 113px;
+    left: 1185px;
+  }
+  #roadYReverse2 {
+    position: absolute;
+    top: 0;
+    left: 1285px;
+  }
+  #Button{
+      position: absolute;
+      top: 700px;
+      left: 0;
+  }
