@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semaforo e Estrada Simulation</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #eee;
+    }
+
+    canvas {
+      border: 1px solid #333;
+    }
+
+    .controls {
+  position: absolute;
+  left: 750px; /* Ajuste conforme necessário */
+  top: 800px;
+}
+
+.controls2 {
+  position: absolute;
+  right: 10px; /* Ajuste conforme necessário */
+  top: 10px;
+}
+
+    button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="trafficCanvas" width="1000" height="600"></canvas>
+
+  <div class="controls">
+    <button id="redButton">Vermelho</button>
+    <button id="greenButton">Verde</button>
+  </div>
+
+  <div id="controls2">
+    <button id="red2">Red</button>
+    <button id="green2">Green</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const canvas = document.getElementById('trafficCanvas');
+      const ctx = canvas.getContext('2d');
+      const redButton = document.getElementById('redButton');
+      const greenButton = document.getElementById('greenButton');
+      const redButton2 = document.getElementById('red2');
+      const greenButton2 = document.getElementById('green2');
+      
+
+document.getElementById('green2').addEventListener('click', function() {
+  semaforoColor2 = '#00FF00';
+  isMoving2 = true;
+});
+
+      
+      let semaforoColor = '#00FF00'; // Cor inicial (verde)
+      let semaforoColor2 = '#00ff00'; // Inicialmente vermelho
+
+      let isTransitioning = false;
+
+      // Variáveis para controlar carros
+      let carPosX = 50;
+      let carSpeed = 2;
+      let isMoving = true;
+      let isMoving2 = true;
+      // Add these lines for the second car
+      let car2PosX = 150; // Adjust the starting position as needed
+      let car2Speed = 3; // You can adjust the speed as needed
+
+      // Adicione essas linhas para o carro superior
+    let upperCarPosX = canvas.width - 30; // A posição inicial é o final da estrada
+    let upperCarSpeed = 2; // Você pode ajustar a velocidade conforme necessário
+      
+
+    let upperCar2PosX = canvas.width - 60; // A posição inicial é um pouco à esquerda do primeiro carro superior
+    let upperCar2Speed = 2; // Você pode ajustar a velocidade conforme necessário
+
+      redButton.addEventListener('click', function () {
+        
+        if (!isTransitioning) {
+          isTransitioning = true;
+          transitionToRed();
+        }
+      });
+
+      greenButton.addEventListener('click', function () {
+        semaforoColor = '#00FF00';
+        drawTrafficLight();
+      });
+
+      function transitionToRed() {
+        semaforoColor = '#FFFF00'; // Amarelo durante a transição
+        drawTrafficLight();
+
+        setTimeout(function () {
+          semaforoColor = '#FF0000'; // Vermelho após o amarelo
+          isTransitioning = false;
+          drawTrafficLight();
+        }, 500); // Tempo para o amarelo, ajuste conforme necessário
+      }
+
+
+            redButton2.addEventListener('click', function () {
+            if (!isTransitioning2) {
+                isTransitioning2 = true;
+                transitionToRed2();
+            }
+            });
+
+            greenButton2.addEventListener('click', function () {
+            semaforoColor2 = '#00FF00';
+            isTransitioning2 = false;
+            isMoving2 = true;
+            drawTrafficLight();
+            });
+
+            function transitionToRed2() {
+            semaforoColor2 = '#FFFF00'; // Amarelo durante a transição
+            drawTrafficLight();
+
+            setTimeout(function () {
+                semaforoColor2 = '#FF0000'; // Vermelho após o amarelo
+                isTransitioning2 = false;
+                drawTrafficLight();
+            }, 500); // Tempo para o amarelo, ajuste conforme necessário
+            }
+      
+let animationFrameId;
+
+function drawTrafficLight() {
+    
+  // Cancel the previous frame request
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+
+  function drawTrafficLight() {
+  // Cancel the previous frame request
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+
+  // Limpar o Canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Desenhar o poste do semáforo
+  ctx.fillStyle = '#333';
+  ctx.fillRect(180, 50, 40, 150);
+  ctx.fillStyle = semaforoColor;
+    ctx.beginPath();
+    ctx.arc(200, 220, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Desenhar o segundo semáforo à direita
+    ctx.fillStyle = '#300';
+    ctx.fillRect(canvas.width - 220, 50, 40, 150); // Ajuste a posição x conforme necessário
+    ctx.fillStyle = semaforoColor2;
+    ctx.beginPath();
+    ctx.arc(canvas.width - 200, 90, 10, 0, Math.PI * 2); // Ajuste a posição x conforme necessário
+    ctx.fill();
+
+
+  // Desenhar os círculos do semáforo
+  // Vermelho
+  ctx.fillStyle = semaforoColor === '#FF0000' ? '#FF0000' : '#444';
+  ctx.beginPath();
+  ctx.arc(200, 150, 15, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Amarelo
+  ctx.fillStyle = semaforoColor === '#FFFF00' ? '#FFFF00' : '#444';
+  ctx.beginPath();
+  ctx.arc(200, 115, 15, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Verde
+  ctx.fillStyle = semaforoColor === '#00FF00' ? '#00FF00' : '#444';
+  ctx.beginPath();
+  ctx.arc(200, 80, 15, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Desenhar os círculos do segundo semáforo à direita
+// Vermelho
+ctx.fillStyle = semaforoColor2 === '#FF0000' ? '#FF0000' : '#444';
+ctx.beginPath();
+ctx.arc(canvas.width - 200, 160, 15, 0, Math.PI * 2);
+ctx.fill();
+
+// Amarelo
+ctx.fillStyle = semaforoColor2 === '#FFFF00' ? '#FFFF00' : '#444';
+ctx.beginPath();
+ctx.arc(canvas.width - 200, 125, 15, 0, Math.PI * 2);
+ctx.fill();
+
+// Verde
+ctx.fillStyle = semaforoColor2 === '#00FF00' ? '#00FF00' : '#444';
+ctx.beginPath();
+ctx.arc(canvas.width - 200, 90, 15, 0, Math.PI * 2);
+ctx.fill();
+
+  // Desenhar a estrada
+  ctx.fillStyle = '#444';
+  ctx.fillRect(0, 200, canvas.width, 200);
+
+    // Desenhar a linha tracejada
+    ctx.beginPath();
+    ctx.setLineDash([10, 10]); // Define o estilo da linha tracejada
+    ctx.moveTo(0, 350); // Ajuste a posição y conforme necessário
+    ctx.lineTo(canvas.width, 350);
+    ctx.strokeStyle = '#FFF';
+    ctx.stroke();
+
+    //Desenhar a uma linha reta no meio da estrada
+    ctx.beginPath();
+    ctx.setLineDash([0, 0]); // Define o estilo da linha tracejada
+    ctx.moveTo(0, 300); // Ajuste a posição y conforme necessário
+    ctx.lineTo(canvas.width, 300);
+    ctx.strokeStyle = '#FFF';
+    ctx.stroke();
+
+    // Desenhar a linha tracejada
+    ctx.beginPath();
+    ctx.setLineDash([10, 10]); // Define o estilo da linha tracejada
+    ctx.moveTo(0, 250); // Ajuste a posição y conforme necessário
+    ctx.lineTo(canvas.width, 250);
+    ctx.strokeStyle = '#FFF';
+    ctx.stroke();
+    
+
+  // Desenhar o carro
+  ctx.fillStyle = '#00F';
+  ctx.fillRect(carPosX, 310, 30, 20);
+
+  // Verificar se o carro está a 10px do semáforo vermelho
+  const isNearRedLight = carPosX + 30 >= 180 && carPosX < 190 && semaforoColor === '#FF0000';
+
+  // Movimentar o carro se o semáforo estiver verde ou se não estiver perto do vermelho
+  if (isMoving && (semaforoColor === '#00FF00' || !isNearRedLight)) {
+    carPosX += carSpeed;
+  }
+
+  // Verificar se o carro atingiu o final da estrada
+  if (carPosX > canvas.width) {
+    carPosX = -30; // Reiniciar na posição inicial
+  }
+
+  ctx.fillStyle = '#F00'; // Change the color so you can distinguish the cars
+  ctx.fillRect(car2PosX, 370, 30, 20); // Change the y-coordinate so the cars don't overlap
+  // Check if the second car is near the red light
+
+  const isCar2NearRedLight = car2PosX + 30 >= 180 && car2PosX < 190 && semaforoColor === '#FF0000';
+  // Move the second car if the light is green or if it's not near the red light
+  if (isMoving && (semaforoColor === '#00FF00' || !isCar2NearRedLight)) {
+  car2PosX += car2Speed;
+}
+
+// Check if the second car has reached the end of the road
+  if (car2PosX > canvas.width) {
+  car2PosX = -30; // Reset to the starting position
+}
+
+// Desenhe o carro superior
+ctx.fillStyle = '#0F0'; // Mude a cor para distinguir os carros
+ctx.fillRect(upperCarPosX, 270, 30, 20); // Mude a coordenada y para que os carros não se sobreponham
+// Verifique se o carro superior está próximo do semáforo vermelho
+const isUpperCarNearRedLight = upperCarPosX <= canvas.width - 190 && upperCarPosX > canvas.width - 220 - 30 && semaforoColor2 === '#FF0000';
+
+// Atualize a posição do carro superior se o semáforo estiver verde ou se o carro não estiver próximo do semáforo vermelho
+if (isMoving2 && (semaforoColor2 === '#00FF00' || !isUpperCarNearRedLight)) {
+  upperCarPosX -= upperCarSpeed;
+}
+
+// Verifique se o carro superior atingiu o final da estrada
+if (upperCarPosX + 30 < 0) {
+  upperCarPosX = canvas.width; // Reiniciar na posição inicial
+}
+
+// Desenhe o segundo carro superior
+ctx.fillStyle = '#651'; // Mude a cor para distinguir os carros
+ctx.fillRect(upperCar2PosX, 215, 30, 20); // Mude a coordenada y para que os carros não se sobreponham
+
+// Verifique se o segundo carro superior está próximo do semáforo vermelho
+const isUpperCar2NearRedLight = upperCar2PosX <= canvas.width - 190 && upperCar2PosX > canvas.width - 220 - 30 && semaforoColor2 === '#FF0000';
+
+// Atualize a posição do segundo carro superior se o semaforo estiver verde ou se o carro não estiver próximo do semáforo vermelho
+if (isMoving2 && (semaforoColor2 === '#00FF00' || !isUpperCar2NearRedLight)) {
+  upperCar2PosX -= upperCarSpeed;
+}
+
+// Verifique se o segundo carro superior atingiu o final da estrada
+if (upperCar2PosX + 30 < 0) {
+  upperCar2PosX = canvas.width; // Reiniciar na posição inicial
+}
+
+  // Redesenhar a cada frame
+  animationFrameId = requestAnimationFrame(drawTrafficLight);
+}
+
+        // Redesenhar a cada frame
+        requestAnimationFrame(drawTrafficLight);
+      }
+
+      // Inicializar o desenho do semáforo
+      drawTrafficLight();
+    });
+  </script>
+</body>
+
+</html>
